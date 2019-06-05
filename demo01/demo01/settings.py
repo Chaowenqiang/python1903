@@ -55,7 +55,7 @@ ROOT_URLCONF = 'demo01.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,9 +104,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# 设置语言
+LANGUAGE_CODE = 'zh-hans'
+# LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+#设置时区
+TIME_ZONE = 'Asia/ShangHai'
+# TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
