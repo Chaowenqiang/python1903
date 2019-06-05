@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>list界面</title>
+</head>
+<body>
+    <h3>list界面</h3>
+    <ul>
+        书名
+        {% for book in books %}
+        <li><a href="/test1/detail/{{book.id}}/">{{book.title}}</a></li>
+        {% endfor %}
+        <br><br><br><br><br>
+
+        <a href="/test1/index/">返回首页</a>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detail界面</title>
+</head>
+<body>
+    <h3>detail界面</h3>
+
+    <ul>
+        {% for hero in book.heroinfo_set.all %}
+        <li>{{ hero.name }}</li>
+        {% endfor %}
+    </ul>
+    <br><br><br><br><br>
+
+    <a href="/test1/list/">返回列表</a>
+</body>
+</html>
