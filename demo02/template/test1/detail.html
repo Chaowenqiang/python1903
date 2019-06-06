@@ -14,7 +14,7 @@
 
         {% if book.heroinfo_set.all %}
             {% for hero in book.heroinfo_set.all %}
-                <li>{{ hero.name }}</li>
+                <li> {{ hero.name }} <a href="{% url 'test1:deletehero' hero.id %}">删除</a> </li>
             {% endfor %}
         {% else %}
             没有人物信息

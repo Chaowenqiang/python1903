@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from .models import BookInfo,HeroInfo
 from django.template import loader
 
@@ -39,3 +39,10 @@ def detail(req, id):
     # return HttpResponse(res)
 
     return render(req, 'test1/detail.html', {'book':book})
+
+
+def deletehero(req, id):
+    hero = HeroInfo.objects.get(pk=id)
+    hero.delete()
+    return HttpResponseRedirect('/detail/%s/'%(hero.book.id),)
+    # return HttpResponse('删除%s'%(id,))
