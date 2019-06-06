@@ -21,5 +21,7 @@ from django.conf.urls import url,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     # url('test1/', include('test1.urls'))
+
+    # include中的第二个参数是应用路由的路径，第三个参数是对第一个参数重命名
     url('', include('test1.urls', namespace='test1'),)
 ]
