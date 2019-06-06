@@ -7,13 +7,23 @@
 <body>
     <h3>list界面</h3>
     <ul>
-        书名
-        {% for book in books %}
-        <li><a href="/test1/detail/{{book.id}}/">{{book.title}}</a></li>
-        {% endfor %}
+        <!--书名-->
+        <!--{% for book in books %}-->
+        <!--<li><a href="/test1/detail/{{book.id}}/">{{book.title}}</a></li>-->
+        <!--{% endfor %}-->
+
+        {% if books %}
+            {% for book in books %}
+                <li><a href="{% url 'test1:detail' book.id %}">{{book.title}}</a></li>
+            {%endfor%}
+        {% else %}
+            没有书籍信息
+        {% endif %}
+
         <br><br><br><br><br>
 
-        <a href="/test1/index/">返回首页</a>
+        <!--<a href="/test1/index/">返回首页</a>-->
+        <a href="{% url 'test1:index' %}">返回首页</a>
     </ul>
 </body>
 </html>

@@ -29,10 +29,5 @@ class HeroInfoAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
-
-
-
-
-
 admin.site.register(BookInfo,BookInfoAdmin)
 admin.site.register(HeroInfo,HeroInfoAdmin)

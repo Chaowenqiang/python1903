@@ -8,12 +8,22 @@
     <h3>detail界面</h3>
 
     <ul>
-        {% for hero in book.heroinfo_set.all %}
-        <li>{{ hero.name }}</li>
-        {% endfor %}
+        <!--{% for hero in book.heroinfo_set.all %}-->
+        <!--<li>{{ hero.name }}</li>-->
+        <!--{% endfor %}-->
+
+        {% if book.heroinfo_set.all %}
+            {% for hero in book.heroinfo_set.all %}
+                <li>{{ hero.name }}</li>
+            {% endfor %}
+        {% else %}
+            没有人物信息
+        {% endif %}
     </ul>
     <br><br><br><br><br>
 
-    <a href="/test1/list/">返回列表</a>
+    <!--<a href="/test1/list/">返回列表</a>-->
+    <a href="{% url 'test1:list' %}">返回列表</a>
+
 </body>
 </html>
