@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index首页</title>
+</head>
+<body>
+    <div>
+        <ul>
+            问题列表：
+            {% for q in questions %}
+                <li><a href="{% url 'vote_info:detail' q.id %}">{{ q.question }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

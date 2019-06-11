@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结果界面</title>
+</head>
+<body>
+    <div>
+        投票结果
+        <ul>
+            {% for c in question.votes_set.all %}
+                <li>{{ c.name }}:{{ c.votes }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <a href="{% url 'vote_info:index' %}">返回首页</a>
+</body>
+</html>

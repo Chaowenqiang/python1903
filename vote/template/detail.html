@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <form action="{% url 'vote_info:detail' questions.id %}" method="post">
+             问题：{{questions.question}}
+            <br>
+            {% for c in questions.votes_set.all %}
+
+                <li><input type="radio" name="votes" value="{{ c.id }}">{{c.name}}</li>
+
+            {% endfor %}
+
+            <input type="submit" value="投票">
+        </form>
+
+    </div>
+</body>
+</html>
