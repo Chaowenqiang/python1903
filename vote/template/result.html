@@ -8,7 +8,7 @@
     <div>
         投票结果
         <ul>
-            {% for c in question.votes_set.all %}
+            {% for c in questions.votes_set.all %}
                 <li>{{ c.name }}:{{ c.votes }}</li>
             {% endfor %}
         </ul>

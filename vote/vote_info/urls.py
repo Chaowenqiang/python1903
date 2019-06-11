@@ -1,10 +1,11 @@
 from django.conf.urls import url
-from .views import index,detail,result
+from . import views
 
 app_name = 'vote_info'
 
 urlpatterns = [
-    url(r'^$', index, name='index'),
-    url(r'^detail/(\d+)/$', detail, name='detail'),
-    url(r'^result/(\d+)/$', result, name='result'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^detail/(\d+)/$', views.DetailView.as_view(), name='detail'),
+    url(r'^result/(\d+)/$', views.ResultView.as_view(), name='result'),
+    url(r'^login/$', views.LoginView.as_view(), name='login'),
 ]
