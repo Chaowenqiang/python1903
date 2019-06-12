@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>投票结果</title>
+</head>
+<body>
+    <h1>投票结果</h1>
+    <h2>{{ question.title }}</h2>
+    投票结果:
+    <ul>
+        {% for c in question.choice_set.all %}
+            <li>{{ c.title }}: 得票 {{ c.vites }}</li>
+        {% endfor %}
+
+    </ul>
+
+    <a href="{% url 'polls:index' %}">返回首页</a>
+</body>
+</html>
