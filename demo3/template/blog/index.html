@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+index首页
+{% endblock %}
+
+{% block left %}
+
+{% for article in articles %}
+<article class="post {{ article.id }}">
+    <header class="entry-header">
+        <h1 class="entry-title">
+            <a href="{% url 'blog:single' article.id %}">{{ article.title }}</a>
+        </h1>
+        <div class="entry-meta">
+            <span class="post-category"><a href="#">{{ article.category.title }}</a></span>
+            <span class="post-date"><a href="#"><time class="entry-date" datetime="2012-11-09T23:15:57+00:00">{{ article.create_time }}</time></a></span>
+            <span class="post-author"><a href="#">{{ article.author }}</a></span>
+            <span class="comments-link"><a href="#">{{ article.comment_set.count }} 评论</a></span>
+            <span class="views-count"><a href="#">{{ article.views }} 阅读</a></span>
+        </div>
+    </header>
+    <div class="entry-content clearfix">
+        <p>{{ article.body|truncatechars:30 }}...</p>
+        <div class="read-more cl-effect-14">
+            <a href="#" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+        </div>
+    </div>
+</article>
+{% endfor %}
+
+
+{% endblock %}
