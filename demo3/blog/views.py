@@ -1,8 +1,46 @@
-from django.shortcuts import render,get_object_or_404,redirect,reverse
-from django.views.generic import View,ListView
-from .models import Article,Tag,Category
+from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.views.generic import View, ListView
+from .models import Article, Tag, Category
 from comments.forms import CommentForm
+from django.core.paginator import Paginator
+from django.http import HttpRequest
+
+
 # Create your views here.
+
+
+# 分页操作，每页显示几个
+# def decorator(func):
+#
+#     def inner(self, req, *args):
+#         # 从数据库中查询所有的文章
+#         articles = Article.objects.all()
+#
+#         paginator = Paginator(articles, )
+#         pagenum = req.GET.get('page')
+#         pagenum = 1 if pagenum == None else pagenum
+#         page = paginator.get_page(pagenum)
+#         page.path = '/'
+#
+#         return func(self, req, *args)
+#
+#     return inner
+
+def get_page_info(request, queryset, path, per_page=1):
+
+    # 分页操作，每页显示几个
+    paginator = Paginator(queryset, per_page)
+    pagenum = request.GET.get('page')
+    pagenum = 1 if pagenum == None else pagenum
+    page = paginator.get_page(pagenum)
+    page.path = path
+    return page
+
+
+class AboutView(View):
+
+    def get(self, req):
+        return render(req, 'blog/about.html')
 
 
 class IndexView(View):
@@ -10,17 +48,22 @@ class IndexView(View):
     def get(self, req):
         # 从数据库中查询所有的文章
         articles = Article.objects.all()
+
+        page = get_page_info(req, articles, '/')
+
         # 渲染指定的html页面，locals()等同于{'articles':articles}用于向前端页面传输数据，且前端接收数据的字段应与字典中的键相同
-        return render(req, 'blog/index.html', locals())
+        return render(req, 'blog/index.html', {'page': page})
 
 
 class SingleView(View):
 
     def get(self, req, id):
-
         # get_object_or_404方法可以从指定的数据库中得到指定的数据，没有则返回404
         article = get_object_or_404(Article, pk=id)
         cf = CommentForm()
+
+
+
         return render(req, 'blog/single.html', locals())
 
     def post(self, req, id):
@@ -36,3 +79,35 @@ class SingleView(View):
             # 重定向到指定路由
             return redirect(reverse('blog:single', args=(id,)))
 
+
+# 创建时间归类函数
+class ArchiveView(View):
+
+    def get(self, req, year, month):
+
+        articles = Article.objects.filter(create_time__year=year, create_time__month=month)
+        page = get_page_info(req, articles, '/archive/%s/%s/' % (year, month), 2)
+
+        return render(req, 'blog/index.html', {'page': page})
+
+
+class CategoryView(View):
+
+    def get(self, req, id):
+
+        category = get_object_or_404(Category, pk=id)
+        articles = category.article_set.all()
+        page = get_page_info(req, articles, '/category/%s/' % (id,), 2)
+
+        return render(req, 'blog/index.html', {'page': page})
+
+
+class TagView(View):
+
+    def get(self, req, id):
+
+        tag = get_object_or_404(Tag, pk=id)
+        articles = tag.article_set.all()
+        page = get_page_info(req, articles, '/tag/%s/' % (id,))
+
+        return render(req, 'blog/index.html', {'page': page})

@@ -11,10 +11,13 @@ from django import forms
 class CommentForm(forms.ModelForm):
     # 关联模型
     class Meta():
+        '''
+        model和fields为关键字字段，不可变，model = Comment指定了关联的模型，并非实例化
+        '''
         model = Comment
         # 重写模型中的部分字段
         fields = ["author", "content", "email", "url"]
-        widget={'content':forms.Textarea}
+        widget = {'content':forms.Textarea}
 
 
 
