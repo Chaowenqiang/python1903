@@ -4,6 +4,7 @@ from .models import Article, Tag, Category
 from comments.forms import CommentForm
 from django.core.paginator import Paginator
 from django.http import HttpRequest
+import markdown
 
 
 # Create your views here.
@@ -60,9 +61,20 @@ class SingleView(View):
     def get(self, req, id):
         # get_object_or_404方法可以从指定的数据库中得到指定的数据，没有则返回404
         article = get_object_or_404(Article, pk=id)
+
+        # 1、获取markdown实例
+        md = markdown.Markdown(extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+            'markdown.extensions.toc',
+        ])
+        # 2、使用makedown实例渲染指定字段
+        article.body = md.convert(article.body)
+        # 3、将md的目录对象赋值给article
+        article.toc = md.toc
+
+        # 向页面传递一个评论表单
         cf = CommentForm()
-
-
 
         return render(req, 'blog/single.html', locals())
 
