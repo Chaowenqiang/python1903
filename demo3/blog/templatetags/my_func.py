@@ -1,5 +1,5 @@
 from django.template import Library
-from ..models import Article,Category,Tag
+from ..models import Article,Category,Tag,Img
 
 register = Library()
 
@@ -26,3 +26,9 @@ def get_category():
 def get_tags():
 
     return Tag.objects.all()
+
+
+@register.simple_tag
+def get_ads():
+
+    return Img.objects.all()

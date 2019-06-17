@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^tag/(\d+)/$', views.TagView.as_view(), name='tag'),
     url(r'^rss/$', ArticleFeed(), name='rss'),
     url(r'^about/$', views.AboutView.as_view(), name='about'),
+    url(r'^contact/$', views.ContactView.as_view(), name='contact')
 ]

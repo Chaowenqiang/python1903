@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'comments',
+    # 注册tinymce应用可以找到应用下方文件夹
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -105,9 +107,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
+# 配置语言
 # LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'zh-Hans'
 
+# 配置时区
 # TIME_ZONE = 'UTC'
 TIME_ZONE = 'Asia/ShangHai'
 
@@ -122,4 +126,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# 配置样式相对路径
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+
+# 配置媒体相对路径
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/')
+
+
+# 配置富文本，这里是针对admin来设置的
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'advanced',
+    'width': 600,
+    'height': 400,
+}
+

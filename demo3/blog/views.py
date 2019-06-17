@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views.generic import View, ListView
-from .models import Article, Tag, Category
+from .models import Article, Tag, Category,MessageInfo
 from comments.forms import CommentForm
 from django.core.paginator import Paginator
 from django.http import HttpRequest
@@ -9,23 +9,6 @@ import markdown
 
 # Create your views here.
 
-
-# 分页操作，每页显示几个
-# def decorator(func):
-#
-#     def inner(self, req, *args):
-#         # 从数据库中查询所有的文章
-#         articles = Article.objects.all()
-#
-#         paginator = Paginator(articles, )
-#         pagenum = req.GET.get('page')
-#         pagenum = 1 if pagenum == None else pagenum
-#         page = paginator.get_page(pagenum)
-#         page.path = '/'
-#
-#         return func(self, req, *args)
-#
-#     return inner
 
 def get_page_info(request, queryset, path, per_page=1):
 
@@ -123,3 +106,20 @@ class TagView(View):
         page = get_page_info(req, articles, '/tag/%s/' % (id,))
 
         return render(req, 'blog/index.html', {'page': page})
+
+
+class ContactView(View):
+
+    def get(self, req):
+
+        return render(req, 'blog/contact.html')
+
+    def post(self, req):
+        mi = MessageInfo()
+        mi.name = req.POST.get('name')
+        mi.email = req.POST.get('email')
+        mi.content = req.POST.get('message')
+        mi.save()
+        return redirect(reverse('blog:contact'))
+
+
