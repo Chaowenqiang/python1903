@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
 
-    # 关闭csrf不安全，csrf：跨站伪造请求
+    # 关闭csrf不安全，csrf：跨站请求伪造
     'django.middleware.csrf.CsrfViewMiddleware',
 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -63,7 +63,7 @@ ROOT_URLCONF = 'demo2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,"templates")],
+        'DIRS': [os.path.join(BASE_DIR,"template")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,3 +130,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STSTICFILE_DIRS = os.path.join(BASE_DIR, 'static')
+
+
+# 邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True #是否使用TLS安全传输协议(用于在两个通信应用程序之间提供保密性和数据完整性。)
+EMAIL_USE_SSL = False #是否使用SSL加密，qq企业邮箱要求使用
+EMAIL_HOST = 'smtp.163.com' #发送邮件的邮箱 的 SMTP服务器，这里用了163邮箱
+EMAIL_PORT = 25 #发件箱的SMTP服务器端口
+EMAIL_HOST_USER = '18137128152@163.com' #发送邮件的邮箱地址
+EMAIL_HOST_PASSWORD = 'qikuedu'
+DEFAULT_FROM_EMAIL = 'zzy0371 <18137128152@163.com>'
+

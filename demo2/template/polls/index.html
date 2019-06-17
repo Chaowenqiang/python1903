@@ -6,7 +6,7 @@
 
 {% block body %}
     {% if request.user and request.user.is_authenticated %}
-        <h3>当前用户为 {{ request.user }} <a href="{% url 'polls:logout' %}">退出</a>  </h3>
+        <h3>当前用户为 {{ request.user }} <a href="{% url 'polls:logout' %}">退出</a></h3>
     {% endif %}
     <br>
     <h1>首页</h1>
