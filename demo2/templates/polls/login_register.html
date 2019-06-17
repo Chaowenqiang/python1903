@@ -1,0 +1,50 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}
+    登陆界面
+{% endblock %}
+
+{% block body %}
+
+    <div>
+        <h3>{{ errormessage }}</h3>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#login" aria-controls="login" role="tab" data-toggle="tab">登录</a>
+            </li>
+            <li role="presentation">
+                <a href="#register" aria-controls="register" role="tab" data-toggle="tab">注册</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+            <div role="tabpanel" class="tab-pane active" id="login">
+                <form action="{% url 'polls:login' %}" method="post">
+                    <form>
+                        {% csrf_token %}
+                        {{ lf }}
+                        <br>
+                        <button type="submit" class="btn btn-default">登录</button>
+                    </form>
+                </form>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="register">
+                <form action="{% url 'polls:register' %}" method="post">
+                <form>
+                    {% csrf_token %}
+                    {{ rf }}
+                    <br>
+                    <button type="submit" class="btn btn-default">注册</button>
+                </form>
+            </form>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

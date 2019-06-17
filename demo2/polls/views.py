@@ -1,7 +1,9 @@
 from django.shortcuts import render,redirect,reverse
 from django.http import HttpResponse,JsonResponse
 from django.views.generic import View
-from .models import Question,Choice
+from .models import Question,Choice,MyUser
+from .forms import MyUserLoginForm,MyUserRegisterForm
+from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 
 """
@@ -22,12 +24,11 @@ from .models import Question,Choice
 
 def checklogin(fun):
     def check(self,req,*args):
-        if req.COOKIES.get("username"):
+        if req.user and req.user.is_authenticated:
             return fun(self,req,*args)
         else:
             return redirect(reverse("polls:login"))
     return check
-
 
 
 class IndexView(View):
@@ -42,6 +43,7 @@ class IndexView(View):
         questions = Question.objects.all()
         return render(req, "polls/index.html", locals())
 
+
 class DetailView(View):
     @checklogin
     def get(self,req,id):
@@ -54,7 +56,9 @@ class DetailView(View):
         choice = Choice.objects.get(pk=c_id)
         choice.vites += 1
         choice.save()
+        # return render(req, 'polls/result.html', locals())
         return redirect(reverse("polls:result", args=(id, )))
+
 
 class ReusltView(View):
     @checklogin
@@ -62,26 +66,68 @@ class ReusltView(View):
         question = Question.objects.get(pk=id)
         return render(req,"polls/result.html",locals())
 
+
 class LoginView(View):
+
+    # 定义get请求函数
     def get(self,req):
-        return render(req,"polls/login.html")
+        lf = MyUserLoginForm()
+        rf = MyUserRegisterForm()
+        return render(req, "polls/login_register.html", locals())
 
+    # 定义post请求函数
     def post(self,req):
+
+        # 获取post请求所得到的值
         username = req.POST.get("username")
-        pwd = req.POST.get("password")
-        # 查询数据库是否有该用户，如果有则登录成功，跳转到首页  需要设置Cookie
-        # cookie实在response里设置
-        res = redirect(reverse("polls:index"))
-        res.set_cookie("username",username)
-        return res
+        password = req.POST.get("password")
+
+        # 使用django自带授权系统，如果授权成功返回user
+        user = authenticate(req, username=username, password=password)
+        # 判断用户信息是否在数据库中存在
+        if user:
+            # 在客户端存储cookie
+            login(req, user)
+            # 重定向到index界面
+            return redirect(reverse('polls:index'))
+        else:
+            lf = MyUserLoginForm()
+            rf = MyUserRegisterForm()
+            errormessage = '登陆失败'
+            # 返回登陆注册界面
+            return render(req, 'polls:login_register.html', locals())
+
+
+class RegisterView(View):
+
+    def post(self, req):
+        try:
+            username = req.POST.get('username')
+            password = req.POST.get('password')
+            email = req.POST.get('email')
+
+            # 向数据库写入用户信息并查重
+            user = MyUser.objects.create_user(username=username, email=email,password=password)
+            # 如果写入成功，则重定向至登陆界面
+            if user:
+                return redirect(reverse('polls:index'))
+        except:
+            lf = MyUserLoginForm()
+            rf = MyUserRegisterForm()
+            errormessage = '账户已存在，注册失败'
+            return render(req, 'polls/login_register.html', locals())
+
+
+class LogOutView(View):
+    def get(self, req):
+        logout(req)
+        return redirect(reverse('polls:login'))
 
 
 
 
-# def mylog(info):
-#     print(info)
-#
-# mylog("helloworld")
+
+
 
 
 """

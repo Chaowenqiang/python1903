@@ -10,6 +10,7 @@
 
 <ul>
     <form action="{% url 'polls:detail' question.id %}" method="post">
+        {% csrf_token %}
         {% for c in question.choice_set.all %}
 
         {% if forloop.counter == 1 %}
@@ -25,6 +26,8 @@
         {% endfor %}
 
         <input type="submit" value="投票">
+
+
 
     </form>
 

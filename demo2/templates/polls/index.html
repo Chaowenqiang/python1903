@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>首页</title>
-</head>
-<body>
+{% extends 'polls/base.html' %}
+
+{% block title %}
+    首页
+{% endblock %}
+
+{% block body %}
+    {% if request.user and request.user.is_authenticated %}
+        <h3>当前用户为 {{ request.user }} <a href="{% url 'polls:logout' %}">退出</a>  </h3>
+    {% endif %}
+    <br>
     <h1>首页</h1>
+
 
     <h2>问题列表</h2>
 
@@ -13,8 +18,5 @@
         {% for q in questions %}
             <h4> <li> <a href="{% url 'polls:detail' q.id %}"> {{ forloop.counter }}-- {{ q.title }}      </a>  </li> </h4>
         {% endfor %}
-
     </ul>
-
-</body>
-</html>
+{% endblock %}
