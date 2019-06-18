@@ -23,13 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'i6e#*me+q4blb4n!*oh8j0rxq%k65@#w#1h95+xj+q)xc*oj0v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = False为调试模式，可以调出404和500错误模板，上线时应关闭改为True
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
+# 应用注册配置
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,23 +43,29 @@ INSTALLED_APPS = [
     'comments',
     # 注册tinymce应用可以找到应用下方文件夹
     'tinymce',
+    # 注册haystack应用用于索引
+    'haystack',
 ]
-
+# 中间件，
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # csrf：跨站请求伪造，关闭时安全性大大降低
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# 根路由
 ROOT_URLCONF = 'demo3.urls'
 
+# 模板配置
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 配置模板相对路径
         'DIRS': [os.path.join(BASE_DIR, 'template')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -77,6 +85,7 @@ WSGI_APPLICATION = 'demo3.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# 数据库配置
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -107,13 +116,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-# 配置语言
+# 配置语言，大小写无所谓
 # LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'zh-Hans'
 
-# 配置时区
+# 配置时区，大小写无所谓
 # TIME_ZONE = 'UTC'
-TIME_ZONE = 'Asia/ShangHai'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -140,4 +149,30 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': 600,
     'height': 400,
 }
+
+
+# 配置redis缓存
+CACHES = {
+    "default": {
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": "localhost:6379",
+        'TIMEOUT': 300,
+    },
+}
+
+
+# 配置搜索信息
+HAYSTACK_CONNECTIONS = {
+'default': {
+'ENGINE': 'blog.whoosh_cn_backend.WhooshEngine',
+'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+}
+}
+
+# 配置搜索结果分页
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+# 配置搜索进程
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
 

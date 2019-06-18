@@ -1,15 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views.generic import View, ListView
 from .models import Article, Tag, Category,MessageInfo
-from comments.forms import CommentForm
-from django.core.paginator import Paginator
 from django.http import HttpRequest
+from comments.forms import CommentForm
+# 引入分页模块
+from django.core.paginator import Paginator
+# 引入markdown模块
 import markdown
-
-
+# 引入单个缓存界面模块
+from django.views.decorators.cache import cache_page
 # Create your views here.
 
 
+# 对分页功能进行函数式封装
 def get_page_info(request, queryset, path, per_page=1):
 
     # 分页操作，每页显示几个
@@ -29,6 +32,7 @@ class AboutView(View):
 
 class IndexView(View):
 
+    @cache_page(300)
     def get(self, req):
         # 从数据库中查询所有的文章
         articles = Article.objects.all()
@@ -37,6 +41,18 @@ class IndexView(View):
 
         # 渲染指定的html页面，locals()等同于{'articles':articles}用于向前端页面传输数据，且前端接收数据的字段应与字典中的键相同
         return render(req, 'blog/index.html', {'page': page})
+
+
+## 缓存单个界面
+# @cache_page(300)
+def index_view(req):
+    # 从数据库中查询所有的文章
+    articles = Article.objects.all()
+
+    page = get_page_info(req, articles, '/')
+
+    # 渲染指定的html页面，locals()等同于{'articles':articles}用于向前端页面传输数据，且前端接收数据的字段应与字典中的键相同
+    return render(req, 'blog/index.html', {'page': page})
 
 
 class SingleView(View):
