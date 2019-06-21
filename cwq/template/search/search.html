@@ -1,0 +1,207 @@
+﻿{% extends 'shopping/base.html' %}
+{% load my_func %}
+
+{% block body %}
+
+<div class="ps-products-wrap pt-80 pb-80">
+	<div class="ps-products" data-mh="product-listing">
+	  <div class="ps-product-action">
+		<div class="ps-product__filter">
+		  <select class="ps-select selectpicker">
+			<option value="1">Shortby</option>
+			<option value="2">Name</option>
+			<option value="3">Price (Low to High)</option>
+			<option value="3">Price (High to Low)</option>
+		  </select>
+		</div>
+		<div class="ps-pagination">
+		  <ul class="pagination">
+
+			  {% if page.has_previous %}
+			<li><a href="?q={{ query }}&page={{ page.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+			  {% endif %}
+
+			  {% for i in page.paginator.page_range %}
+
+			  	{% if i == page.number %}
+			<li class="active"><a href="#">{{ i }}</a></li>
+			  	{% else %}
+			<li><a href="?q={{ query }}&page={{ i }}">{{ i }}</a></li>
+			  	{% endif %}
+
+			  {% endfor %}
+
+			  {% if page.has_next %}
+			<li><a href="?q={{ query }}&page={{ page.next_page_number }}"><i class="fa fa-angle-right"></i></a></li>
+			  {% endif %}
+		  </ul>
+		</div>
+	  </div>
+
+	  <div class="ps-product__columns">
+		  {% for goods in page.object_list %}
+		  <div class="ps-product__column">
+		  <div class="ps-shoe mb-30">
+			<div class="ps-shoe__thumbnail">
+				<a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a><img src="/static/media/{{ goods.object.goods_pic.pic1 }}" alt=""><a class="ps-shoe__overlay" href="product-detail.html"></a>
+			</div>
+			<div class="ps-shoe__content">
+			  <div class="ps-shoe__variants">
+				<div class="ps-shoe__variant normal"><img src="/static/media/{{ goods.object.goods_pic.pic2 }}" alt=""><img src="/static/media/{{ goods.object.goods_pic.pic3 }}" alt=""><img src="/static/media/{{ goods.object.goods_pic.pic4 }}" alt=""><img src="/static/media/{{ goods.object.goods_pic.pic5 }}" alt=""></div>
+				<select class="ps-rating ps-shoe__rating">
+				  <option value="1">1</option>
+				  <option value="1">2</option>
+				  <option value="1">3</option>
+				  <option value="1">4</option>
+				  <option value="2">5</option>
+				</select>
+			  </div>
+			  <div class="ps-shoe__detail"><a class="ps-shoe__name" href="#">{{ goods.object.goods_name }}</a>
+				<p class="ps-shoe__categories"><a href="#">{{ goods.object.goods_crow }}</a>,<a href="#"> {{ goods.object.goods_brand }}</a>,<a href="#">{{ goods.object.goods_style }}</a></p><span class="ps-shoe__price">
+				  ￥ {{ goods.object.goods_price }}</span>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		  {% endfor %}
+	  </div>
+
+	  <div class="ps-product-action">
+		 <div class="ps-product__filter">
+		  <select class="ps-select selectpicker">
+			<option value="1">Shortby</option>
+			<option value="2">Name</option>
+			<option value="3">Price (Low to High)</option>
+			<option value="3">Price (High to Low)</option>
+		  </select>
+		</div>
+		<div class="ps-pagination">
+		  <ul class="pagination">
+			  {% if page.has_previous %}
+			<li><a href="?q={{ query }}&page={{ page.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+			  {% endif %}
+
+			  {% for i in page.paginator.page_range %}
+
+			  	{% if i == page.number %}
+			<li class="active"><a href="#">{{ i }}</a></li>
+			  	{% else %}
+			<li><a href="?q={{ query }}&page={{ i }}">{{ i }}</a></li>
+			  	{% endif %}
+
+			  {% endfor %}
+
+			  {% if page.has_next %}
+			<li><a href="?q={{ query }}&page={{ page.next_page_number }}"><i class="fa fa-angle-right"></i></a></li>
+			  {% endif %}
+		  </ul>
+		</div>
+	  </div>
+	</div>
+	<div class="ps-sidebar" data-mh="product-listing">
+	  <aside class="ps-widget--sidebar ps-widget--category">
+		<div class="ps-widget__header">
+		  <h3>分类</h3>
+		</div>
+		<div class="ps-widget__content">
+		  <ul class="ps-list--checked">
+			  {% get_styles as styles %}
+			  {% for style in styles %}
+			<li class="current"><a href="{% url 'shopping:style' style.id %}">{{ style.style }}({{ style.conut }})</a></li>
+			  {% endfor %}
+			<li><a href="product-listing.html">更多</a></li>
+		  </ul>
+		</div>
+	  </aside>
+	  <aside class="ps-widget--sidebar ps-widget--category">
+		<div class="ps-widget__header">
+		  <h3>热销品牌</h3>
+		</div>
+		<div class="ps-widget__content">
+		  <ul class="ps-list--checked">
+			  {% get_brands as brands %}
+			  {% for brand in brands %}
+			  	{% if brand.id == page.number %}
+			<li class="current"><a href="{% url 'shopping:brand' brand.id %}">{{ brand.brand }}({{ brand.count }})</a></li>
+			  	{% else %}
+			  	<li><a href="{% url 'shopping:brand' brand.id %}">{{ brand.brand }}({{ brand.count }})</a></li>
+			  	{% endif %}
+			  {% endfor %}
+		  </ul>
+		</div>
+	  </aside>
+	  <div class="ps-sticky desktop">
+		<aside class="ps-widget--sidebar">
+		  <div class="ps-widget__header">
+			<h3>Size</h3>
+		  </div>
+		  <div class="ps-widget__content">
+			<table class="table ps-table--size">
+			  <tbody>
+				<tr>
+				  <td class="active">3</td>
+				  <td>5.5</td>
+				  <td>8</td>
+				  <td>10.5</td>
+				  <td>13</td>
+				</tr>
+				<tr>
+				  <td>3.5</td>
+				  <td>6</td>
+				  <td>8.5</td>
+				  <td>11</td>
+				  <td>13.5</td>
+				</tr>
+				<tr>
+				  <td>4</td>
+				  <td>6.5</td>
+				  <td>9</td>
+				  <td>11.5</td>
+				  <td>14</td>
+				</tr>
+				<tr>
+				  <td>4.5</td>
+				  <td>7</td>
+				  <td>9.5</td>
+				  <td>12</td>
+				  <td>14.5</td>
+				</tr>
+				<tr>
+				  <td>5</td>
+				  <td>7.5</td>
+				  <td>10</td>
+				  <td>12.5</td>
+				  <td>15</td>
+				</tr>
+			  </tbody>
+			</table>
+		  </div>
+		</aside>
+		<aside class="ps-widget--sidebar">
+		  <div class="ps-widget__header">
+			<h3>Color</h3>
+		  </div>
+		  <div class="ps-widget__content">
+			<ul class="ps-list--color">
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			  <li><a href="#"></a></li>
+			</ul>
+		  </div>
+		</aside>
+	  </div>
+	</div>
+</div>
+
+{% endblock %}
+

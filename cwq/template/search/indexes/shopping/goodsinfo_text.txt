@@ -1,0 +1,5 @@
+
+{{ object.goods_name }}
+{{ object.goods_brand }}
+{{ object.goods_crow }}
+{{ object.goods_style }}

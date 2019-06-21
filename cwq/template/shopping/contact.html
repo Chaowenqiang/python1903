@@ -1,0 +1,34 @@
+{% extends 'shopping/base.html' %}
+
+
+{% block body %}
+<div style="width:480px;height:680px;margin:0 auto;background-color:#e4e4e4;">
+    <div class="ps-home-contact__form" style="width:380px;height:580px;margin:0 auto;background-color:#e4e4e4;">
+        <header>
+            <h3>联系我们</h3>
+            <p>Learn about our company profile, communityimpact, sustainable motivation, and more.</p>
+        </header>
+        <footer>
+            <form action="{% url 'shopping:contact' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>姓名<span>(o.o`)</span></label>
+                    <input class="form-control" type="text" style="background-color:#ccc;" name="name">
+                </div>
+                <div class="form-group">
+                    <label>邮箱<span>(0.0)</span></label>
+                    <input class="form-control" type="email" style="background-color:#ccc;" name="email">
+                </div>
+                <div class="form-group">
+                    <label>留言<span>(`o.o)</span></label>
+                    <textarea class="form-control" rows="4" style="background-color:#ccc;" name="content"></textarea>
+                </div>
+                <div class="form-group text-center">
+                    <button class="ps-btn" type="submit">提交<i class="fa fa-angle-right"></i></button>
+                </div>
+            </form>
+        </footer>
+    </div>
+</div>
+
+{% endblock %}
