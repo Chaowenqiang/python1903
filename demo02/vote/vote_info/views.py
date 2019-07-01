@@ -57,7 +57,7 @@ class ResultView(View):
 class LoginView(View):
 
     def get(self, req):
-        return render(req, 'login.html')
+        return render(req, 'login_register.html')
 
     def post(self, req):
         username = req.POST.get('username')
