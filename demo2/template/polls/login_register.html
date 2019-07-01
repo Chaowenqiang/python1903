@@ -6,28 +6,33 @@
 
 {% block script %}
 
-    <script src="static/js/main.js"></script>
-
-{% endblock %}
-
-{% block body %}
-
     <script>
         $(function(){
+
+            $("#my_img").click( function(){
+                $("#my_img").attr("src","/verify/?t="+ new Date().getTime())
+            })
+
             $("#id_username").blur(function(){
                 $.ajax({
                     type:"get",
                     url:"/checkusername/?username="+$("#id_username").val(),
-                    success:function(){
+                    success:function(data){
                         console.log(data);
-                        if(data["statecode"]==0){
-                            console.log('账户名不存在')
-                        };
-                    };
-                });
-            });
+                        if(data["statecode"]==0)
+                        {
+                            $("#error_info").text(data["error"] )
+                        }
+                    }
+
+                })
+            } )
         });
     </script>
+
+{% endblock %}
+
+{% block body %}
 
     <div>
         <h3>{{ errormessage }}</h3>
@@ -47,9 +52,12 @@
             <div role="tabpanel" class="tab-pane active" id="login">
                 <form action="{% url 'polls:login' %}" method="post">
                     <form>
+                        <li id="error_info"></li>
                         {% csrf_token %}
                         {{ lf }}
                         <br>
+                        <lable for="id_verify">验证码</lable><img id="my_img"  width="100" height="25" src="{% url 'polls:verify' %}" alt="">
+                        <input type="text" name="verify" class="form-control" maxlength="150" required="" id="id_verify" style="width:142px;height:25px;">
                         <button type="submit" class="btn btn-default">登录</button>
                     </form>
                 </form>
